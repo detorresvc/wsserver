@@ -9,6 +9,7 @@ export const queryWhitelist = [
 
   r.table('messages')
     .orderBy('created_at')
+    .filter(r.row('created_at').ge(new Date().setHours(0,0,0,0)))
     .opt("db", r.db(cfg.dbName)),
 
 
