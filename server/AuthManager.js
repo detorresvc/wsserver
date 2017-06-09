@@ -6,7 +6,6 @@ import {r} from 'rethinkdb-websocket-server';
 class AuthManager {
 
 	constructor(options = {}, rConn){
-		this.db = db
 		this.options = options
 		this.rConn = rConn
 	}
@@ -24,74 +23,49 @@ class AuthManager {
 	      return buf.toString('base64');
 	    });
 	  }
+	  
+	signup = (username, password, confirm_password) => {
 
-	checkAccount = (username, password) => {
-		return this.db('users')
-				.where({
-					username
-				})
-				.first('password')
-				.then(response => {
-					const newPassword = this._parsePassword(response.password);
+		if(password !== confirm_password){
+			return Promise.resolve({
+				status: 404,
+				errors: 'Password does not match to confirm password'
+			})
+		}
 
-					return {
-						isValid: bcrypt.compareSync(password, newPassword),
-						password: bcrypt.hashSync(password, this.options.bcryptRounds)
-					}
-				})
-	}
-
-	signup = (username, password) => {
-		return Promise.all(
-				 
-				[
-				//check to edb
-				this.getUser(username),
-				//check to mysql
-				this.checkAccount(username, password)
-				]
-			)
-		
+		return this.getUser(username)
 			.then(response => {
 
-				if(response[0].length > 0){
+				if(response.length > 0){
 					return {
 						status: 302,
 						errors: 'User already Exist'
 					}
 				}
 
-				if(response[1].isValid){
+				return this._genAuthToken().then(chat_token => {
 
-					return this._genAuthToken().then(chat_token => {
+					//insert to rdb
+					return this._run(
+						r.table('users').insert({
+							username,
+							chat_token,
+							password: bcrypt.hashSync(password, this.options.bcryptRounds)
+						}))
+						.then(res => {
 
-						//insert to rdb
-						return this._run(
-							r.table('users').insert({
-								username,
-								chat_token,
-								password: response[1].password
-							}))
-							.then(res => {
-
-			                	return {
-									status: 200,
-									data : {
-										username, 
-										chat_token
-									}
+		                	return {
+								status: 200,
+								data : {
+									username, 
+									chat_token
 								}
-			            	})
-			            	.catch(e => {
-			            		return Promise.reject(e)
-			            	})
-					})
-				}
-
-				return {
-					status: 404,
-					errors: 'Invalid Credentials'
-				}
+							}
+		            	})
+		            	.catch(e => {
+		            		return Promise.reject(e)
+		            	})
+				})
 			})
 	}
 

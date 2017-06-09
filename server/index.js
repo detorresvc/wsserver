@@ -29,7 +29,7 @@ app.use(cors())
 app.use('/', express.static('assets'));
 
 app.post('/signup', (req, res) => {
-    return auth.signup(req.body.username, req.body.password)
+    return auth.signup(req.body.username, req.body.password, req.body.confirm_password)
     	.then(response => {
     		res.send(response)
     	})
