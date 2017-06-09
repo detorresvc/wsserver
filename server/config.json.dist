@@ -5,7 +5,7 @@
   "dbPort": 28015,
   "bcryptRounds": 8,
   "authTokenBytes": 16,
-  "httpPath" : "/bitdragon",
+  "httpPath" : "/",
 
   "mysql": {
   	"host": "localhost",
