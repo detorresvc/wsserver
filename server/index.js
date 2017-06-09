@@ -29,15 +29,14 @@ app.use(cors())
 app.use('/', express.static('assets'));
 
 app.post('/signup', (req, res) => {
-    console.log(req.body)
-    return auth.signup(req.username, req.password)
+    return auth.signup(req.body.username, req.body.password)
     	.then(response => {
     		res.send(response)
     	})
 });
 
 app.post('/signin', (req, res) => {
-    return auth.signin(req.username, req.password)
+    return auth.signin(req.body.username, req.body.password)
       .then(response => {
         res.send(response)
       })
