@@ -8,8 +8,8 @@ export const queryWhitelist = [
     .opt("db", r.db(cfg.dbName)),
 
   r.table('messages')
-    .orderBy('created_at')
     .filter(r.row('created_at').ge(new Date().setHours(0,0,0,0)))
+    .orderBy('created_at')
     .opt("db", r.db(cfg.dbName)),
 
 
