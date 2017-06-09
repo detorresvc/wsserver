@@ -7,7 +7,7 @@ import {queryWhitelist} from './queries';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json()
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};
 const rConn = Promise.resolve(r.connect(rOpts))
@@ -26,8 +26,8 @@ const sessionCreator = urlQueryParams => {
 const app = express();
 
 app.use(cors())
-
 app.use('/', express.static('assets'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/signup',bodyParser, (req, res) => {
     return auth.signup(req.body.username, req.body.password)
