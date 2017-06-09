@@ -5,6 +5,7 @@ import express from 'express';
 import {r, listen as wsListen} from 'rethinkdb-websocket-server';
 import {queryWhitelist} from './queries';
 import cors from 'cors';
+import  bodyParser from 'body-parser';
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};
 const rConn = Promise.resolve(r.connect(rOpts))
@@ -21,10 +22,14 @@ const sessionCreator = urlQueryParams => {
 
 const app = express();
 
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(cors())
 app.use('/', express.static('assets'));
 
 app.post('/signup', (req, res) => {
+    console.log(req.body)
     return auth.signup(req.username, req.password)
     	.then(response => {
     		res.send(response)
