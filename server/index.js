@@ -5,13 +5,9 @@ import express from 'express';
 import {r, listen as wsListen} from 'rethinkdb-websocket-server';
 import {queryWhitelist} from './queries';
 import cors from 'cors';
-import bodyParser from 'body-parser';
-const jsonParser = bodyParser.json()
-
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};
 const rConn = Promise.resolve(r.connect(rOpts))
-
 
 const auth = new AuthManager(cfg, rConn)
 
@@ -27,17 +23,16 @@ const app = express();
 
 app.use(cors())
 app.use('/', express.static('assets'));
-app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/signup',bodyParser, (req, res) => {
-    return auth.signup(req.body.username, req.body.password)
+app.post('/signup', (req, res) => {
+    return auth.signup(req.username, req.password)
     	.then(response => {
     		res.send(response)
     	})
 });
 
-app.post('/signin',bodyParser, (req, res) => {
-    return auth.signin(req.body.username, req.body.password)
+app.post('/signin', (req, res) => {
+    return auth.signin(req.username, req.password)
       .then(response => {
         res.send(response)
       })
