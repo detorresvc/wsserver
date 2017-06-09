@@ -7,7 +7,7 @@ import {queryWhitelist} from './queries';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json()
-
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};
 const rConn = Promise.resolve(r.connect(rOpts))
@@ -29,14 +29,14 @@ app.use(cors())
 
 app.use('/', express.static('assets'));
 
-app.post('/signup',jsonParser, (req, res) => {
+app.post('/signup',bodyParser, (req, res) => {
     return auth.signup(req.body.username, req.body.password)
     	.then(response => {
     		res.send(response)
     	})
 });
 
-app.post('/signin',jsonParser, (req, res) => {
+app.post('/signin',bodyParser, (req, res) => {
     return auth.signin(req.body.username, req.body.password)
       .then(response => {
         res.send(response)
