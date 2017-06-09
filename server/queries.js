@@ -1,6 +1,9 @@
 import cfg from './config';
 import {r, RP} from 'rethinkdb-websocket-server';
 
+var d = new Date();
+        d.setHours(d.getHours()-5);
+
 export const queryWhitelist = [
 
   r.table('messages')
@@ -8,7 +11,7 @@ export const queryWhitelist = [
     .opt("db", r.db(cfg.dbName)),
 
   r.table('messages')
-    .filter(r.row('created_at').ge(new Date().setHours(0,0,0,0)))
+    .filter(r.row('created_at').ge(d)
     .orderBy('created_at')
     .opt("db", r.db(cfg.dbName)),
 
