@@ -6,11 +6,12 @@ import {r, listen as wsListen} from 'rethinkdb-websocket-server';
 import {queryWhitelist} from './queries';
 import cors from 'cors';
 import  bodyParser from 'body-parser';
+import fs from 'fs';
 
 const ssl_opt = {
-  ca: '/home/bitdragon/certificate/ws.ca-bundle',
-  key: '/home/bitdragon/certificate/ws.key',
-  cert: '/home/bitdragon/certificate/ws.crt' 
+  ca: fs.readFileSync('/home/bitdragon/certificate/ws.ca-bundle', 'utf8'),
+  key: fs.readFileSync('/home/bitdragon/certificate/ws.key', 'utf8'),
+  cert: fs.readFileSync('/home/bitdragon/certificate/ws.crt', 'utf8') 
 }
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};
