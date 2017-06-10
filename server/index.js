@@ -1,11 +1,17 @@
 import AuthManager from './AuthManager';
 import cfg from './config';
-import http from 'http';
+import https from 'https';
 import express from 'express';
 import {r, listen as wsListen} from 'rethinkdb-websocket-server';
 import {queryWhitelist} from './queries';
 import cors from 'cors';
 import  bodyParser from 'body-parser';
+
+const ssl_opt = {
+  ca: '/home/bitdragon/certificate/ws.ca-bundle',
+  key: '/home/bitdragon/certificate/ws.key',
+  cert: '/home/bitdragon/certificate/ws.crt' 
+}
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};
 const rConn = Promise.resolve(r.connect(rOpts))
@@ -42,7 +48,7 @@ app.post('/signin', (req, res) => {
       })
 });
 
-const httpServer = http.createServer(app);
+const httpServer = https.createServer(ssl_opt, app);
 
 wsListen({
   	httpServer,
