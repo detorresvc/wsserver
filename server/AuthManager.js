@@ -1,7 +1,7 @@
 import db from './db';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import {r} from 'rethinkdb-websocket-server';
+import { r } from 'rethinkdb-websocket-server';
 
 class AuthManager {
 
@@ -19,10 +19,11 @@ class AuthManager {
 	}
 
 	_genAuthToken() {
+
 	    return Promise.resolve(crypto.randomBytes(this.options.authTokenBytes)).then(buf => {
 	      return buf.toString('base64');
 	    });
-	  }
+	 }
 	  
 	signup = (username, password, confirm_password) => {
 
