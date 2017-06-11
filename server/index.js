@@ -9,9 +9,9 @@ import  bodyParser from 'body-parser';
 import fs from 'fs';
 
 const ssl_opt = {
-    ca: fs.readFileSync('/home/bitdragon/certificate/ws.ca-bundle', 'utf8'),
-    key: fs.readFileSync('/home/bitdragon/certificate/ws.key', 'utf8'),
-    cert: fs.readFileSync('/home/bitdragon/certificate/ws.crt', 'utf8') 
+    ca: fs.readFileSync(cfg.certificate.ca, 'utf8'),
+    key: fs.readFileSync(cfg.certificate.key, 'utf8'),
+    cert: fs.readFileSync(cfg.certificate.cert, 'utf8') 
 }
 
 const rOpts = {host: cfg.dbHost, port: cfg.dbPort, db: cfg.dbName};

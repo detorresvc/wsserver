@@ -12,5 +12,11 @@
   	"database": "",
   	"user": "root",
   	"password": ""
-  }
+  },
+
+  "certificate" : {
+        "ca": "",
+        "key": "",
+        "cert": ""
+    }
 }
