@@ -11,8 +11,8 @@ export const queryWhitelist = [
 
   r.table('messages')
     .orderBy('created_at')
-    .filter( r.row('created_at').day().eq(RP.check(x => typeof x === 'number' && x === d.getDate())) )
-    .filter( r.row('created_at').hours().eq(RP.check(x => typeof x === 'number' && x === d.getHours())) )
+    .filter( r.row('created_at').day().eq(RP.check(x => typeof x === 'number')) )
+    .filter( r.row('created_at').hours().eq(RP.check(x => typeof x === 'number')) )
     .opt("db", r.db(cfg.dbName)),
 
   r.table('messages')
