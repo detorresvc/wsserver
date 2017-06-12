@@ -5,10 +5,6 @@ const d = new Date()
 
 export const queryWhitelist = [
 
-    r.table('messages')
-        .changes()
-        .opt("db", r.db(cfg.dbName)),
-
     r.table('users')
         .filter({online: RP.check(x => typeof x === 'boolean')})
         .changes()
@@ -32,6 +28,12 @@ export const queryWhitelist = [
             return refs.username === session.username 
         }),
 
+    
+    r.table('messages')
+        .changes()
+        .opt("db", r.db(cfg.dbName)),
+
+
     r.table('messages')
         .orderBy(r.desc('created_at'))
         .slice(RP.check(x => typeof x === 'number'), RP.check(x => typeof x === 'number'))
@@ -48,5 +50,8 @@ export const queryWhitelist = [
         .opt("db", r.db(cfg.dbName))
         .validate((refs, session) => {
             return refs.name === session.username
-        })
+        })    
+
+    
+    
 ];
