@@ -23,12 +23,8 @@ export const queryWhitelist = [
         .update({
             online: RP.check(x => typeof x === 'boolean')
         })
-        .opt("db", r.db(cfg.dbName))
-        .validate((refs, session) => {
-            return refs.username === session.username 
-        }),
+        .opt("db", r.db(cfg.dbName)),
 
-    
     r.table('messages')
         .changes()
         .opt("db", r.db(cfg.dbName)),
