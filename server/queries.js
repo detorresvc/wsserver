@@ -10,9 +10,9 @@ export const queryWhitelist = [
     .opt("db", r.db(cfg.dbName)),
 
   r.table('messages')
-    .orderBy('created_at')
-    .filter( r.row('created_at').day().eq(RP.check(x => typeof x === 'number')) )
-    .filter( r.row('created_at').hours().eq(RP.check(x => typeof x === 'number')) )
+    .orderBy(r.desc('created_at'))
+    .slice(RP.check(x => typeof x === 'number'), RP.check(x => typeof x === 'number'))
+    .orderBy(r.asc('created_at'))
     .opt("db", r.db(cfg.dbName)),
 
   r.table('messages')
