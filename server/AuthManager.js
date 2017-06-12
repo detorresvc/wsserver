@@ -111,12 +111,23 @@ class AuthManager {
 					}
 				}
 
+				this._run(
+					r.table('users')
+						.filter({
+							username
+						})
+						.update({
+							online: true
+						})
+				)
+
 				return {
 					status: 200,
 					data : {
 						user_id: data[0].user_id,
 						username, 
-						chat_token
+						chat_token,
+						online: true
 					}
 				}
 			})
