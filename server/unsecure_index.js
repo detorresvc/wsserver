@@ -43,6 +43,13 @@ app.post('/signin', (req, res) => {
       })
 });
 
+app.post('/gen', (req, res) => {
+    return auth.generateChatToken(req.body.username, req.body.chat_password)
+      .then(response => {
+        res.send(response)
+      })
+});
+
 const httpServer = http.createServer(app);
 
 wsListen({
@@ -50,9 +57,7 @@ wsListen({
   	httpPath: cfg.httpPath,                      
   	dbHost: cfg.dbHost,
   	dbPort: cfg.dbPort,
-  	unsafelyAllowAnyQuery: false,
-    sessionCreator,
-    queryWhitelist
+  	unsafelyAllowAnyQuery: true
 });
 
 // Start the HTTP server on the configured port

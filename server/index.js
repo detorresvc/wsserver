@@ -49,6 +49,9 @@ app.post('/signin', (req, res) => {
       })
 });
 
+
+
+
 const httpServer = https.createServer(ssl_opt, app);
 
 wsListen({
@@ -56,9 +59,9 @@ wsListen({
   	httpPath: cfg.httpPath,                      
   	dbHost: cfg.dbHost,
   	dbPort: cfg.dbPort,
-  	unsafelyAllowAnyQuery: false,
-    sessionCreator,
-    queryWhitelist
+  	unsafelyAllowAnyQuery: true,
+    //sessionCreator,
+    //queryWhitelist
 });
 
 // Start the HTTP server on the configured port
